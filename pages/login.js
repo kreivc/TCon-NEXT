@@ -39,7 +39,7 @@ export default function Login() {
 					direction={{ base: "column-reverse", md: "row" }}
 					px={{ base: "0", md: "48" }}
 				>
-					<Flex flex={1}>
+					<Flex flex={1} display={{ base: "none", md: "flex" }}>
 						<Box
 							w={{ base: "320px", lg: "500px" }}
 							h={{ base: "320px", lg: "500px" }}

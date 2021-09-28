@@ -56,7 +56,7 @@ export default function Header() {
 				justifySelf="self-start"
 				onClick={mobileNav.onClose}
 			/>
-			<Button w="full" variant="ghost" onClick={mobileNav.onClose}>
+			{/* <Button w="full" variant="ghost" onClick={mobileNav.onClose}>
 				Profile
 			</Button>
 			<Button w="full" variant="ghost" onClick={mobileNav.onClose}>
@@ -67,7 +67,14 @@ export default function Header() {
 			</Button>
 			<Button w="full" variant="ghost" onClick={mobileNav.onClose}>
 				About
-			</Button>
+			</Button> */}
+			<InputGroup w="full">
+				<InputRightElement
+					pointerEvents="none"
+					children={<AiOutlineSearch color="#52C8FA" />}
+				/>
+				<Input type="tel" placeholder="Search..." rounded="full" />
+			</InputGroup>
 			<Button
 				w="full"
 				variant="ghost"
