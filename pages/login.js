@@ -12,15 +12,28 @@ import {
 } from "@chakra-ui/react";
 import Image from "next/image";
 import Logo from "../assets/logoTCon.png";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { DataContext } from "../context/GlobalState";
 
 export default function Login() {
 	const [email, setEmail] = useState();
 	const [password, setPassword] = useState();
+	// const [user, setUser] = useState();
+	const { dispatch } = useContext(DataContext);
+	const router = useRouter();
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log(email, password);
+		await axios
+			.post("https://tcon-api.herokuapp.com/auth/login", {
+				email,
+				password,
+			})
+			.then((result) => dispatch({ type: "AUTH", payload: result.data }))
+			.catch((err) => console.log(err));
+		router.push("/");
 	};
 
 	return (

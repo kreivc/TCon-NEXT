@@ -1,5 +1,5 @@
 /* eslint-disable react/no-children-prop */
-import React from "react";
+import React, { useContext } from "react";
 import {
 	chakra,
 	HStack,
@@ -14,22 +14,16 @@ import {
 	InputRightElement,
 	InputGroup,
 } from "@chakra-ui/react";
-import { useViewportScroll } from "framer-motion";
 import { AiOutlineMenu, AiOutlineSearch } from "react-icons/ai";
 import Image from "next/image";
 import Logo from "../assets/logopanjang.png";
 import { useRouter } from "next/router";
+import { DataContext } from "../context/GlobalState";
 
 export default function Header() {
-	const ref = React.useRef();
-	const [y, setY] = React.useState(0);
-	const { height = 0 } = ref.current ? ref.current.getBoundingClientRect() : {};
+	const { state } = useContext(DataContext);
+	const { auth } = state;
 
-	const { scrollY } = useViewportScroll();
-	React.useEffect(() => {
-		return scrollY.onChange(() => setY(scrollY.get()));
-	}, [scrollY]);
-	const cl = useColorModeValue("gray.800", "white");
 	const mobileNav = useDisclosure();
 	const router = useRouter();
 
@@ -56,18 +50,6 @@ export default function Header() {
 				justifySelf="self-start"
 				onClick={mobileNav.onClose}
 			/>
-			{/* <Button w="full" variant="ghost" onClick={mobileNav.onClose}>
-				Profile
-			</Button>
-			<Button w="full" variant="ghost" onClick={mobileNav.onClose}>
-				Consult
-			</Button>
-			<Button w="full" variant="ghost" onClick={mobileNav.onClose}>
-				News
-			</Button>
-			<Button w="full" variant="ghost" onClick={mobileNav.onClose}>
-				About
-			</Button> */}
 			<InputGroup w="full">
 				<InputRightElement
 					pointerEvents="none"
@@ -92,8 +74,6 @@ export default function Header() {
 	return (
 		<React.Fragment>
 			<chakra.header
-				ref={ref}
-				shadow={y > height ? "sm" : undefined}
 				transition="box-shadow 0.2s"
 				bg={"white"}
 				w="full"
