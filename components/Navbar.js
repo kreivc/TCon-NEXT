@@ -15,6 +15,7 @@ import {
 	MenuList,
 	MenuItem,
 	MenuButton,
+	createStandaloneToast,
 } from "@chakra-ui/react";
 import { AiOutlineMenu, AiOutlineSearch } from "react-icons/ai";
 import { FiChevronDown } from "react-icons/fi";
@@ -30,10 +31,18 @@ export default function Header() {
 
 	const mobileNav = useDisclosure();
 	const router = useRouter();
+	const toast = createStandaloneToast();
 
 	const handleLogout = () => {
 		localStorage.removeItem("user");
 		dispatch({ type: "AUTH", payload: {} });
+		toast({
+			title: "Logged out successfully!",
+			description: "Successfully logged out.",
+			status: "success",
+			duration: 5000,
+			isClosable: true,
+		});
 		return router.reload("/");
 	};
 
