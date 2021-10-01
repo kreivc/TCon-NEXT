@@ -20,7 +20,6 @@ import { DataContext } from "../context/GlobalState";
 export default function Login() {
 	const [email, setEmail] = useState();
 	const [password, setPassword] = useState();
-	// const [user, setUser] = useState();
 	const { dispatch } = useContext(DataContext);
 	const router = useRouter();
 
@@ -31,7 +30,15 @@ export default function Login() {
 				email,
 				password,
 			})
-			.then((result) => dispatch({ type: "AUTH", payload: result.data }))
+			.then((result) =>
+				localStorage.setItem("user", JSON.stringify(result.data))
+			)
+			.then(() =>
+				dispatch({
+					type: "AUTH",
+					payload: JSON.parse(localStorage.getItem("user")),
+				})
+			)
 			.catch((err) => console.log(err));
 		router.push("/");
 	};

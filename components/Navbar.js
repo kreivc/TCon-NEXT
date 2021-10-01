@@ -21,7 +21,7 @@ import { useRouter } from "next/router";
 import { DataContext } from "../context/GlobalState";
 
 export default function Header() {
-	const { state } = useContext(DataContext);
+	const { state, dispatch } = useContext(DataContext);
 	const { auth } = state;
 
 	const mobileNav = useDisclosure();
@@ -71,6 +71,12 @@ export default function Header() {
 		</VStack>
 	);
 
+	const handleLogout = () => {
+		localStorage.removeItem("user");
+		dispatch({ type: "AUTH", payload: {} });
+		return router.reload("/");
+	};
+
 	return (
 		<React.Fragment>
 			<chakra.header
@@ -113,17 +119,31 @@ export default function Header() {
 						</Flex>
 						<Flex justify="flex-end" align="center" color="gray.400">
 							<HStack spacing="5" display={{ base: "none", md: "flex" }}>
-								<Button
-									variant="solid"
-									fontSize="medium"
-									color="white"
-									bg="#52C8FA"
-									_hover={{ bg: "#60cdfc" }}
-									cursor="pointer"
-									onClick={() => router.push("/login")}
-								>
-									Sign In
-								</Button>
+								{!auth ? (
+									<Button
+										variant="solid"
+										fontSize="medium"
+										color="white"
+										bg="#52C8FA"
+										_hover={{ bg: "#60cdfc" }}
+										cursor="pointer"
+										onClick={() => router.push("/login")}
+									>
+										Sign In
+									</Button>
+								) : (
+									<Button
+										variant="solid"
+										fontSize="medium"
+										color="white"
+										bg="red"
+										_hover={{ bg: "red.400" }}
+										cursor="pointer"
+										onClick={handleLogout}
+									>
+										Logout
+									</Button>
+								)}
 							</HStack>
 							<IconButton
 								display={{ base: "flex", md: "none" }}
