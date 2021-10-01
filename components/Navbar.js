@@ -19,6 +19,7 @@ import Image from "next/image";
 import Logo from "../assets/logopanjang.png";
 import { useRouter } from "next/router";
 import { DataContext } from "../context/GlobalState";
+import MobileNav from "./MobileNav";
 
 export default function Header() {
 	const { state, dispatch } = useContext(DataContext);
@@ -26,50 +27,6 @@ export default function Header() {
 
 	const mobileNav = useDisclosure();
 	const router = useRouter();
-
-	const MobileNavContent = (
-		<VStack
-			pos="absolute"
-			top={0}
-			left={0}
-			right={0}
-			display={mobileNav.isOpen ? "flex" : "none"}
-			flexDirection="column"
-			p={2}
-			pb={4}
-			m={2}
-			bg={"white"}
-			spacing={3}
-			rounded="sm"
-			shadow="md"
-			zIndex={99}
-			color="#2e373f"
-		>
-			<CloseButton
-				aria-label="Close menu"
-				justifySelf="self-start"
-				onClick={mobileNav.onClose}
-			/>
-			<InputGroup w="full">
-				<InputRightElement
-					pointerEvents="none"
-					children={<AiOutlineSearch color="#52C8FA" />}
-				/>
-				<Input type="tel" placeholder="Search..." rounded="full" />
-			</InputGroup>
-			<Button
-				w="full"
-				variant="ghost"
-				bg="#52C8FA"
-				onClick={() => {
-					router.push("/login");
-					mobileNav.onClose();
-				}}
-			>
-				Sign In
-			</Button>
-		</VStack>
-	);
 
 	const handleLogout = () => {
 		localStorage.removeItem("user");
@@ -156,7 +113,11 @@ export default function Header() {
 							/>
 						</Flex>
 					</Flex>
-					{MobileNavContent}
+					<MobileNav
+						mobileNav={mobileNav}
+						auth={auth}
+						handleLogout={handleLogout}
+					/>
 				</chakra.div>
 			</chakra.header>
 		</React.Fragment>
