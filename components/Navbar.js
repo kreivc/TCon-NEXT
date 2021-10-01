@@ -7,14 +7,17 @@ import {
 	IconButton,
 	useColorModeValue,
 	useDisclosure,
-	CloseButton,
-	VStack,
 	Button,
 	Input,
 	InputRightElement,
 	InputGroup,
+	Menu,
+	MenuList,
+	MenuItem,
+	MenuButton,
 } from "@chakra-ui/react";
 import { AiOutlineMenu, AiOutlineSearch } from "react-icons/ai";
+import { FiChevronDown } from "react-icons/fi";
 import Image from "next/image";
 import Logo from "../assets/logopanjang.png";
 import { useRouter } from "next/router";
@@ -89,17 +92,53 @@ export default function Header() {
 										Sign In
 									</Button>
 								) : (
-									<Button
-										variant="solid"
-										fontSize="medium"
-										color="white"
-										bg="red"
-										_hover={{ bg: "red.400" }}
-										cursor="pointer"
-										onClick={handleLogout}
-									>
-										Logout
-									</Button>
+									// <Button
+									// 	variant="solid"
+									// 	fontSize="medium"
+									// 	color="white"
+									// 	bg="red"
+									// 	_hover={{ bg: "red.400" }}
+									// 	cursor="pointer"
+									// 	onClick={handleLogout}
+									// >
+									// 	Logout
+									// </Button>
+									<Menu>
+										<MenuButton
+											as={Button}
+											rightIcon={<FiChevronDown />}
+											color="white"
+											bg="#52C8FA"
+											_hover={{ bg: "#60cdfc" }}
+										>
+											{auth.name}
+										</MenuButton>
+										<MenuList>
+											<MenuItem
+												variant="ghost"
+												fontSize="medium"
+												color="gray.700"
+												cursor="pointer"
+												fontWeight="semibold"
+												_hover={{ color: "#60cdfc", bg: "gray.100" }}
+												_active={{ bg: "gray.200" }}
+											>
+												Profile
+											</MenuItem>
+											<MenuItem
+												variant="solid"
+												fontSize="medium"
+												color="gray.700"
+												cursor="pointer"
+												onClick={handleLogout}
+												fontWeight="semibold"
+												_hover={{ color: "red", bg: "gray.100" }}
+												_active={{ bg: "gray.200" }}
+											>
+												Logout
+											</MenuItem>
+										</MenuList>
+									</Menu>
 								)}
 							</HStack>
 							<IconButton
