@@ -89,7 +89,7 @@ export default function Header() {
 										cursor="pointer"
 										onClick={() => router.push("/login")}
 									>
-										Sign In
+										Login
 									</Button>
 								) : (
 									// <Button
