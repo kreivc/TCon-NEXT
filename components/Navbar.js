@@ -1,5 +1,5 @@
 /* eslint-disable react/no-children-prop */
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
 	chakra,
 	HStack,
@@ -16,6 +16,7 @@ import {
 	MenuItem,
 	MenuButton,
 	createStandaloneToast,
+	Box,
 } from "@chakra-ui/react";
 import { AiOutlineMenu, AiOutlineSearch } from "react-icons/ai";
 import { FiChevronDown } from "react-icons/fi";
@@ -28,6 +29,7 @@ import MobileNav from "./MobileNav";
 export default function Header() {
 	const { state, dispatch } = useContext(DataContext);
 	const { auth } = state;
+	const [search, setSearch] = useState("");
 
 	const mobileNav = useDisclosure();
 	const router = useRouter();
@@ -77,12 +79,22 @@ export default function Header() {
 						</Flex>
 						<Flex>
 							<HStack spacing="5" display={{ base: "none", md: "flex" }}>
-								<InputGroup w="500px">
-									<InputRightElement
-										pointerEvents="none"
-										children={<AiOutlineSearch color="#52C8FA" />}
+								<InputGroup
+									w="500px"
+									as="form"
+									onSubmit={() => router.push(`/search?c=${search}`)}
+								>
+									<Input
+										type="text"
+										placeholder="Search..."
+										rounded="full"
+										onChange={(e) => setSearch(e.target.value)}
 									/>
-									<Input type="tel" placeholder="Search..." rounded="full" />
+									<InputRightElement
+										as="button"
+										children={<AiOutlineSearch color="#52C8FA" />}
+										type="submit"
+									/>
 								</InputGroup>
 							</HStack>
 						</Flex>
