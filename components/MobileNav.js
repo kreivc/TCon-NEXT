@@ -16,7 +16,13 @@ import React from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FiChevronDown } from "react-icons/fi";
 
-export default function MobileNav({ mobileNav, auth, handleLogout }) {
+export default function MobileNav({
+	mobileNav,
+	auth,
+	handleLogout,
+	handleSearch,
+	setSearch,
+}) {
 	const router = useRouter();
 	return (
 		<VStack
@@ -41,12 +47,19 @@ export default function MobileNav({ mobileNav, auth, handleLogout }) {
 				justifySelf="self-start"
 				onClick={mobileNav.onClose}
 			/>
-			<InputGroup w="full">
-				<InputRightElement
-					pointerEvents="none"
-					children={<AiOutlineSearch color="#52C8FA" />}
+			<InputGroup w="full" as="form" onSubmit={handleSearch}>
+				<Input
+					type="tel"
+					placeholder="Search..."
+					rounded="full"
+					onChange={(e) => setSearch(e.target.value.toLowerCase())}
 				/>
-				<Input type="tel" placeholder="Search..." rounded="full" />
+				<InputRightElement
+					as="button"
+					children={<AiOutlineSearch color="#52C8FA" />}
+					color="#52C8FA"
+					type="submit"
+				/>
 			</InputGroup>
 			{!auth ? (
 				<Button
@@ -62,16 +75,6 @@ export default function MobileNav({ mobileNav, auth, handleLogout }) {
 					Login
 				</Button>
 			) : (
-				// <Button
-				// 	w="full"
-				// 	variant="ghost"
-				// 	color="white"
-				// 	bg="red"
-				// 	_hover={{ bg: "red.400" }}
-				// 	onClick={handleLogout}
-				// >
-				// 	Logout
-				// </Button>
 				<Menu>
 					<MenuButton
 						as={Button}

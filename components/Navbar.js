@@ -16,7 +16,6 @@ import {
 	MenuItem,
 	MenuButton,
 	createStandaloneToast,
-	Box,
 } from "@chakra-ui/react";
 import { AiOutlineMenu, AiOutlineSearch } from "react-icons/ai";
 import { FiChevronDown } from "react-icons/fi";
@@ -34,6 +33,12 @@ export default function Header() {
 	const mobileNav = useDisclosure();
 	const router = useRouter();
 	const toast = createStandaloneToast();
+
+	const handleSearch = (e) => {
+		e.preventDefault();
+		router.push(`/search?c=${search}`);
+		mobileNav.onClose();
+	};
 
 	const handleLogout = () => {
 		localStorage.removeItem("user");
@@ -79,16 +84,12 @@ export default function Header() {
 						</Flex>
 						<Flex>
 							<HStack spacing="5" display={{ base: "none", md: "flex" }}>
-								<InputGroup
-									w="500px"
-									as="form"
-									onSubmit={() => router.push(`/search?c=${search}`)}
-								>
+								<InputGroup w="500px" as="form" onSubmit={handleSearch}>
 									<Input
 										type="text"
 										placeholder="Search..."
 										rounded="full"
-										onChange={(e) => setSearch(e.target.value)}
+										onChange={(e) => setSearch(e.target.value.toLowerCase())}
 									/>
 									<InputRightElement
 										as="button"
@@ -113,17 +114,6 @@ export default function Header() {
 										Login
 									</Button>
 								) : (
-									// <Button
-									// 	variant="solid"
-									// 	fontSize="medium"
-									// 	color="white"
-									// 	bg="red"
-									// 	_hover={{ bg: "red.400" }}
-									// 	cursor="pointer"
-									// 	onClick={handleLogout}
-									// >
-									// 	Logout
-									// </Button>
 									<Menu>
 										<MenuButton
 											as={Button}
@@ -177,6 +167,8 @@ export default function Header() {
 						mobileNav={mobileNav}
 						auth={auth}
 						handleLogout={handleLogout}
+						handleSearch={handleSearch}
+						setSearch={setSearch}
 					/>
 				</chakra.div>
 			</chakra.header>
