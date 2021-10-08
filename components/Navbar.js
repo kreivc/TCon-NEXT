@@ -5,7 +5,6 @@ import {
 	HStack,
 	Flex,
 	IconButton,
-	useColorModeValue,
 	useDisclosure,
 	Button,
 	Input,
@@ -16,18 +15,22 @@ import {
 	MenuItem,
 	MenuButton,
 	createStandaloneToast,
+	Spinner,
 } from "@chakra-ui/react";
-import { AiOutlineMenu, AiOutlineSearch } from "react-icons/ai";
-import { FiChevronDown } from "react-icons/fi";
 import Image from "next/image";
 import Logo from "../assets/logopanjang.png";
 import { useRouter } from "next/router";
 import { DataContext } from "../context/GlobalState";
 import MobileNav from "./MobileNav";
+import { AiOutlineMenu, AiOutlineSearch } from "react-icons/ai";
+import { FiChevronDown } from "react-icons/fi";
+import { BiGlobe } from "react-icons/bi";
+import { IoMdChatboxes } from "react-icons/io";
+import { TiTicket } from "react-icons/ti";
 
 export default function Header() {
 	const { state, dispatch } = useContext(DataContext);
-	const { auth } = state;
+	const { auth, loading } = state;
 	const [search, setSearch] = useState("");
 
 	const mobileNav = useDisclosure();
@@ -37,6 +40,7 @@ export default function Header() {
 	const handleSearch = (e) => {
 		e.preventDefault();
 		router.push(`/search?c=${search}`);
+		dispatch({ type: "LOADING", payload: true });
 		mobileNav.onClose();
 	};
 
@@ -61,7 +65,7 @@ export default function Header() {
 				w="full"
 				overflowY="hidden"
 				borderBottomWidth={2}
-				borderBottomColor={useColorModeValue("gray.200", "gray.900")}
+				borderBottomColor={"gray.200"}
 			>
 				<chakra.div h="4.5rem" mx="auto" maxW="1200px">
 					<Flex
@@ -71,8 +75,12 @@ export default function Header() {
 						alignItems="center"
 						justifyContent="space-between"
 					>
-						<Flex align="flex-start">
-							<HStack as="a" href="/" color="#52C8FA" cursor="pointer">
+						<Flex align="flex-start" alignItems="center" gridGap="3">
+							<HStack
+								color="#52C8FA"
+								cursor="pointer"
+								onClick={() => router.push("/")}
+							>
 								<Image
 									src={Logo}
 									alt="logo_adaconda"
@@ -81,25 +89,58 @@ export default function Header() {
 									objectFit="cover"
 								/>
 							</HStack>
+							<Flex color="#605C5C" gridGap={1}>
+								<Button w="full" variant="ghost" leftIcon={<BiGlobe />}>
+									Blog
+								</Button>
+								<Button w="full" variant="ghost" leftIcon={<IoMdChatboxes />}>
+									Ticket
+								</Button>
+								<Button w="full" variant="ghost" leftIcon={<TiTicket />}>
+									Chat
+								</Button>
+							</Flex>
 						</Flex>
-						<Flex>
-							<HStack spacing="5" display={{ base: "none", md: "flex" }}>
-								<InputGroup w="500px" as="form" onSubmit={handleSearch}>
-									<Input
-										type="text"
-										placeholder="Search..."
-										rounded="full"
-										onChange={(e) => setSearch(e.target.value.toLowerCase())}
-									/>
-									<InputRightElement
-										as="button"
-										children={<AiOutlineSearch color="#52C8FA" />}
-										type="submit"
-									/>
-								</InputGroup>
-							</HStack>
-						</Flex>
-						<Flex justify="flex-end" align="center" color="gray.400">
+
+						<Flex
+							justify="flex-end"
+							align="center"
+							color="gray.400"
+							gridGap="4"
+						>
+							<Flex>
+								<HStack spacing="5" display={{ base: "none", md: "flex" }}>
+									<InputGroup w="280px" as="form" onSubmit={handleSearch}>
+										<Input
+											type="text"
+											placeholder="Search..."
+											rounded="lg"
+											onChange={(e) => setSearch(e.target.value.toLowerCase())}
+										/>
+										{loading ? (
+											<InputRightElement
+												as="button"
+												children={
+													<Spinner
+														thickness="2px"
+														speed="0.65s"
+														emptyColor="gray.200"
+														color="#52C8FA"
+														size="md"
+													/>
+												}
+												type="submit"
+											/>
+										) : (
+											<InputRightElement
+												as="button"
+												children={<AiOutlineSearch color="#52C8FA" />}
+												type="submit"
+											/>
+										)}
+									</InputGroup>
+								</HStack>
+							</Flex>
 							<HStack spacing="5" display={{ base: "none", md: "flex" }}>
 								{!auth ? (
 									<Button
@@ -156,7 +197,7 @@ export default function Header() {
 								display={{ base: "flex", md: "none" }}
 								aria-label="Open menu"
 								fontSize="20px"
-								color={useColorModeValue("gray.800", "inherit")}
+								color={"gray.800"}
 								variant="ghost"
 								icon={<AiOutlineMenu />}
 								onClick={mobileNav.onOpen}

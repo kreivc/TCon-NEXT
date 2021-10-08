@@ -3,6 +3,7 @@ import reducers from "./Reducers";
 
 const initialState = {
 	auth: {},
+	loading: false,
 };
 
 export const DataContext = createContext();

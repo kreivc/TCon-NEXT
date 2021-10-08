@@ -8,6 +8,12 @@ const reducers = (state, action) => {
 				auth: action.payload,
 			};
 
+		case ACTIONS.LOADING:
+			return {
+				...state,
+				loading: action.payload,
+			};
+
 		default:
 			return state;
 	}
