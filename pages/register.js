@@ -36,7 +36,7 @@ export default function Register() {
 	const bgColor = useColorModeValue("gray.50", "whiteAlpha.50");
 	const [isLoading, setIsLoading] = useState(false);
 	const toast = createStandaloneToast();
-	const assert = useAssert(toast);
+	const assert = useAssert(toast, "Unable to register.");
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();

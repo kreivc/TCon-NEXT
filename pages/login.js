@@ -23,6 +23,7 @@ import { useContext, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { DataContext } from "../context/GlobalState";
+import useAssert from "../hooks/useAssert";
 
 export default function Login() {
 	const [email, setEmail] = useState("");
@@ -32,36 +33,25 @@ export default function Login() {
 	const bgColor = useColorModeValue("gray.50", "whiteAlpha.50");
 	const [isLoading, setIsLoading] = useState(false);
 	const toast = createStandaloneToast();
+	const assert = useAssert(toast, "Unable to login.");
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		if (email === "") {
-			return toast({
-				title: "Email cannot be null",
-				description: "Unable to login.",
-				status: "error",
-				duration: 5000,
-				isClosable: true,
-			});
+
+		// Using && chains so when one fail, it won't continue.
+		// Condition must be true to pass assertions.
+		const formValidationAssertions =
+			assert(email !== "", "Email cannot be null") &&
+			assert(password !== "", "Password cannot be null") &&
+			assert(
+				password.length < 6,
+				"Password too weak",
+				"Password must be 6 character minimal.",
+			);
+		if (!formValidationAssertions) {
+			return;
 		}
-		if (password === "") {
-			return toast({
-				title: "Password cannot be null",
-				description: "Unable to login.",
-				status: "error",
-				duration: 5000,
-				isClosable: true,
-			});
-		}
-		if (password.length < 6) {
-			return toast({
-				title: "Password too weak",
-				description: "Password must be 6 character minimal.",
-				status: "error",
-				duration: 5000,
-				isClosable: true,
-			});
-		}
+
 		setIsLoading(true);
 		await axios
 			.post("https://tcon-api.herokuapp.com/auth/login", {
