@@ -36,100 +36,64 @@ export default function Register() {
 	const [isLoading, setIsLoading] = useState(false);
 	const toast = createStandaloneToast();
 
+	/**
+	 * Makes sure the checking condition is satisfied
+	 * @param {boolean} condition The condition that should be satisfied
+	 * @param {string} errorMessage The message when condition is not satisfied
+	 * @returns {boolean} true if condition is satisfied. false otherwise.
+	 */
+	function assert(condition, errorMessage) {
+		if (condition) {
+			return true;
+		}
+		return toast({
+			title: errorMessage,
+			description: "Unable to register.",
+			status: "error",
+			duration: 5000,
+			isClosable: true,
+		});
+		return false;
+	}
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		if (firstName === "") {
-			return toast({
-				title: "First Name cannot be null",
-				description: "Unable to register.",
-				status: "error",
-				duration: 5000,
-				isClosable: true,
-			});
-		}
-		if (lastName === "") {
-			return toast({
-				title: "Last Name cannot be null",
-				description: "Unable to register.",
-				status: "error",
-				duration: 5000,
-				isClosable: true,
-			});
-		}
-		if (email === "") {
-			return toast({
-				title: "Email cannot be null",
-				description: "Unable to register.",
-				status: "error",
-				duration: 5000,
-				isClosable: true,
-			});
-		}
-		if (password === "") {
-			return toast({
-				title: "Password cannot be null",
-				description: "Unable to register.",
-				status: "error",
-				duration: 5000,
-				isClosable: true,
-			});
-		}
-		if (rePassword === "") {
-			return toast({
-				title: "Re-Password cannot be null",
-				description: "Unable to register.",
-				status: "error",
-				duration: 5000,
-				isClosable: true,
-			});
-		}
-		if (password.length < 6) {
-			return toast({
-				title: "Password must be 6 character minimal.",
-				description: "Unable to register.",
-				status: "error",
-				duration: 5000,
-				isClosable: true,
-			});
-		}
-		if (rePassword.length < 6) {
-			return toast({
-				title: "Re-Password must be 6 character minimal.",
-				description: "Unable to register.",
-				status: "error",
-				duration: 5000,
-				isClosable: true,
-			});
-		}
-		if (password !== rePassword) {
-			return toast({
-				title: "Password didn't match",
-				description: "Unable to register.",
-				status: "error",
-				duration: 5000,
-				isClosable: true,
-			});
+
+		// Using && chains so when one fail, it won't continue.
+		// Condition must be true to pass assertions.
+		const formValidationAssertions =
+			assert(firstName !== "", "First name cannot be null") &&
+			assert(lastName !== "", "Last Name cannot be null") &&
+			assert(email !== "", "Email cannot be null") &&
+			assert(password !== "", "Password cannot be null") &&
+			assert(rePassword !== "", "Re-Password cannot be null") &&
+			assert(password.length >= 6, "Password must be 6 character minimal.") &&
+			assert(rePassword.length >= 6, "Re-Password must be 6 character minimal.") &&
+			assert(password === rePassword, "Password didn't match");
+		if (!formValidationAssertions) {
+			return;
 		}
 
 		setIsLoading(true);
-		await axios
-			.post("https://tcon-api.herokuapp.com/auth/register", {
-				email,
-				firstName,
-				lastName,
-				password,
-				phoneNumber,
-			})
-			.then(() =>
-				toast({
-					title: "Successfully Registered!",
-					description: "Login to continue.",
-					status: "success",
-					duration: 5000,
-					isClosable: true,
+		try {
+			await axios
+				.post("https://tcon-api.herokuapp.com/auth/register", {
+					email,
+					firstName,
+					lastName,
+					password,
+					phoneNumber,
 				})
-			)
-			.catch((err) => console.log(err));
+			toast({
+				title: "Successfully Registered!",
+				description: "Login to continue.",
+				status: "success",
+				duration: 5000,
+				isClosable: true,
+			})
+		} catch (err) {
+			console.log(err);
+		}
 		setIsLoading(false);
 		router.push("/login");
 	};
