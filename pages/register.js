@@ -23,6 +23,7 @@ import Logo from "../assets/logoTCon.png";
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
+import useAssert from "../hooks/useAssert";
 
 export default function Register() {
 	const [email, setEmail] = useState("");
@@ -35,26 +36,7 @@ export default function Register() {
 	const bgColor = useColorModeValue("gray.50", "whiteAlpha.50");
 	const [isLoading, setIsLoading] = useState(false);
 	const toast = createStandaloneToast();
-
-	/**
-	 * Makes sure the checking condition is satisfied
-	 * @param {boolean} condition The condition that should be satisfied
-	 * @param {string} errorMessage The message when condition is not satisfied
-	 * @returns {boolean} true if condition is satisfied. false otherwise.
-	 */
-	function assert(condition, errorMessage) {
-		if (condition) {
-			return true;
-		}
-		return toast({
-			title: errorMessage,
-			description: "Unable to register.",
-			status: "error",
-			duration: 5000,
-			isClosable: true,
-		});
-		return false;
-	}
+	const assert = useAssert(toast);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
