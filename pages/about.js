@@ -57,7 +57,7 @@ const About = () => (
 			mt="32"
 			mb="12"
 		>
-			Know More About Our Team
+			Know More About Our Team..
 		</Heading>
 		<Box
 			display="flex"
