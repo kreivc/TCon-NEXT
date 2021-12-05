@@ -2,6 +2,7 @@ import { Box, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import Image from "next/image";
 import Logo from "../assets/logoTCon.png";
+import { getLocalStorage } from "../utils/hooks";
 
 export default function Home() {
 	return (

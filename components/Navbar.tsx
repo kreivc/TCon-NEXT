@@ -29,12 +29,14 @@ import { IoMdChatboxes } from "react-icons/io";
 import { TiTicket } from "react-icons/ti";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { logoutUser, selectUser } from "../store/UserSLice";
+import { getLocalStorage } from "../utils/hooks";
 
 export default function Header() {
 	// const { state, dispatch } = useContext(DataContext);
 	// const { auth, loading } = state;
 	const dispatch = useAppDispatch();
-	const auth = useAppSelector(selectUser);
+	// const auth = useAppSelector(selectUser);
+	const { user: auth } = getLocalStorage(); // temporary
 	const [search, setSearch] = useState("");
 
 	const mobileNav = useDisclosure();
