@@ -21,11 +21,11 @@ interface SearchProps {
 export default function Search({ data }: SearchProps) {
 	const router = useRouter();
 	const [noData, setNoData] = useState(false);
-	const { dispatch } = useContext(DataContext);
+	// const { dispatch } = useContext(DataContext);
 
-	useEffect(() => {
-		dispatch({ type: "LOADING", payload: false });
-	}, [dispatch, router]);
+	// useEffect(() => {
+	// 	dispatch({ type: "LOADING", payload: false });
+	// }, [dispatch, router]);
 
 	return (
 		<>
