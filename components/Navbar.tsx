@@ -1,5 +1,5 @@
 /* eslint-disable react/no-children-prop */
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import {
 	chakra,
 	HStack,
@@ -20,7 +20,6 @@ import {
 import Image from "next/image";
 import Logo from "../assets/logopanjang.png";
 import { useRouter } from "next/router";
-import { DataContext } from "../context/GlobalState";
 import MobileNav from "./MobileNav";
 import { AiOutlineMenu, AiOutlineSearch } from "react-icons/ai";
 import { FiChevronDown } from "react-icons/fi";
@@ -32,8 +31,6 @@ import { logoutUser, selectUser } from "../store/UserSLice";
 import { getLocalStorage } from "../utils/hooks";
 
 export default function Header() {
-	// const { state, dispatch } = useContext(DataContext);
-	// const { auth, loading } = state;
 	const dispatch = useAppDispatch();
 	// const auth = useAppSelector(selectUser);
 	const { user: auth } = getLocalStorage(); // temporary

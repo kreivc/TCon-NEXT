@@ -1,10 +1,9 @@
 import Head from "next/head";
 import { Box, SimpleGrid, Text } from "@chakra-ui/react";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import Card from "../components/Card";
 import { useRouter } from "next/router";
-import { DataContext } from "../context/GlobalState";
 
 export interface Consultant {
 	email: string;
@@ -21,11 +20,6 @@ interface SearchProps {
 export default function Search({ data }: SearchProps) {
 	const router = useRouter();
 	const [noData, setNoData] = useState(false);
-	// const { dispatch } = useContext(DataContext);
-
-	// useEffect(() => {
-	// 	dispatch({ type: "LOADING", payload: false });
-	// }, [dispatch, router]);
 
 	return (
 		<>

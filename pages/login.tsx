@@ -19,10 +19,9 @@ import {
 } from "@chakra-ui/react";
 import Image from "next/image";
 import Logo from "../assets/logoTCon.png";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { DataContext } from "../context/GlobalState";
 import { useAppDispatch } from "../store/hooks";
 import { loggedUser } from "../store/UserSLice";
 import { saveState } from "../store";
