@@ -28,12 +28,12 @@ import { IoMdChatboxes } from "react-icons/io";
 import { TiTicket } from "react-icons/ti";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { logoutUser, selectUser } from "../store/UserSLice";
-import { getLocalStorage } from "../utils/hooks";
+import { loadState } from "../store";
 
 export default function Header() {
 	const dispatch = useAppDispatch();
 	// const auth = useAppSelector(selectUser);
-	const { user: auth } = getLocalStorage(); // temporary
+	const auth = loadState(); // temporary
 	const [search, setSearch] = useState("");
 
 	const mobileNav = useDisclosure();
@@ -60,7 +60,7 @@ export default function Header() {
 			duration: 5000,
 			isClosable: true,
 		});
-		return router.push("/");
+		router.push("/");
 	};
 
 	return (
@@ -148,7 +148,7 @@ export default function Header() {
 								</HStack>
 							</Flex>
 							<HStack spacing="5" display={{ base: "none", md: "flex" }}>
-								{auth.name == "" ? (
+								{auth === undefined ? (
 									<Button
 										variant="solid"
 										fontSize="medium"
@@ -169,7 +169,7 @@ export default function Header() {
 											bg="#52C8FA"
 											_hover={{ bg: "#60cdfc" }}
 										>
-											{auth.name}
+											{auth.user.name}
 										</MenuButton>
 										<MenuList>
 											<MenuItem

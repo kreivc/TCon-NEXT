@@ -2,7 +2,7 @@ import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import user, { User } from "./UserSLice";
 
 export interface UserState {
-	user: User;
+	user?: User;
 }
 
 export const loadState = () => {
@@ -10,7 +10,7 @@ export const loadState = () => {
 	try {
 		const serializedState = localStorage.getItem("user");
 		if (!serializedState) return undefined;
-		return { ...JSON.parse(serializedState) };
+		return JSON.parse(serializedState);
 	} catch (e) {
 		return undefined;
 	}
@@ -21,9 +21,9 @@ export const store = configureStore({
 	preloadedState: loadState(),
 });
 
-store.subscribe(() => {
-	saveState(store.getState());
-});
+// store.subscribe(() => {
+// 	saveState(store.getState());
+// });
 
 export const saveState = (state: UserState) => {
 	try {

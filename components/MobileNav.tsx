@@ -70,7 +70,7 @@ export default function MobileNav({
 					type="submit"
 				/>
 			</InputGroup>
-			{auth.name == "" ? (
+			{auth === undefined ? (
 				<Button
 					w="full"
 					variant="ghost"
@@ -93,7 +93,7 @@ export default function MobileNav({
 						_hover={{ bg: "#60cdfc" }}
 						w="full"
 					>
-						{auth.name}
+						{auth.user.name}
 					</MenuButton>
 					<MenuList>
 						<MenuItem
