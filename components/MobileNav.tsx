@@ -10,11 +10,20 @@ import {
 	MenuList,
 	MenuItem,
 	MenuButton,
+	UseDisclosureReturn,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FiChevronDown } from "react-icons/fi";
+
+interface MobileNavProps {
+	mobileNav: UseDisclosureReturn;
+	auth: any;
+	handleLogout: () => void;
+	handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	setSearch: React.Dispatch<React.SetStateAction<string>>;
+}
 
 export default function MobileNav({
 	mobileNav,
@@ -22,7 +31,7 @@ export default function MobileNav({
 	handleLogout,
 	handleSearch,
 	setSearch,
-}) {
+}: MobileNavProps) {
 	const router = useRouter();
 	return (
 		<VStack
@@ -61,7 +70,7 @@ export default function MobileNav({
 					type="submit"
 				/>
 			</InputGroup>
-			{!auth ? (
+			{auth.name == "" ? (
 				<Button
 					w="full"
 					variant="ghost"

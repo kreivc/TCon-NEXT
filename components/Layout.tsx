@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "./Navbar";
 
-function Layout({ children }) {
+function Layout({ children }: React.PropsWithChildren<{}>) {
 	return (
 		<div className="container">
 			<Navbar />

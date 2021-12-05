@@ -23,17 +23,24 @@ import { useContext, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { DataContext } from "../context/GlobalState";
+import { useAppDispatch } from "../store/hooks";
+import { loggedUser } from "../store/UserSLice";
+import { saveState } from "../store";
 
 export default function Login() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const { dispatch } = useContext(DataContext);
+	// const { dispatch } = useContext(DataContext);
+	const dispatch = useAppDispatch();
+
 	const router = useRouter();
 	const bgColor = useColorModeValue("gray.50", "whiteAlpha.50");
 	const [isLoading, setIsLoading] = useState(false);
 	const toast = createStandaloneToast();
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = async (
+		e: React.FormEvent<HTMLFormElement | HTMLDivElement>
+	) => {
 		e.preventDefault();
 		if (email === "") {
 			return toast({
@@ -82,11 +89,8 @@ export default function Login() {
 						isClosable: true,
 					});
 				} else {
-					localStorage.setItem("user", JSON.stringify(result.data));
-					dispatch({
-						type: "AUTH",
-						payload: JSON.parse(localStorage.getItem("user")),
-					});
+					saveState({ user: result.data });
+					// dispatch(loggedUser(result.data));
 					toast({
 						title: "Login Success!",
 						description: "Successfully logged.",

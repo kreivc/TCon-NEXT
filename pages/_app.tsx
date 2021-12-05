@@ -2,15 +2,18 @@ import "../styles/globals.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import Layout from "../components/Layout";
 import { DataProvider } from "../context/GlobalState";
+import type { AppProps } from "next/app";
+import { Provider } from "react-redux";
+import { store } from "../store";
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: AppProps) {
 	return (
 		<ChakraProvider>
-			<DataProvider>
+			<Provider store={store}>
 				<Layout>
 					<Component {...pageProps} />
 				</Layout>
-			</DataProvider>
+			</Provider>
 		</ChakraProvider>
 	);
 }

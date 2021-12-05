@@ -1,7 +1,12 @@
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
+import { Consultant } from "../pages/search";
 
-export default function Card({ consultant }) {
+interface CardProps {
+	consultant: Consultant;
+}
+
+export default function Card({ consultant }: CardProps) {
 	return (
 		<Box
 			as="button"

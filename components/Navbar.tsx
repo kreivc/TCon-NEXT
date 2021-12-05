@@ -27,26 +27,33 @@ import { FiChevronDown } from "react-icons/fi";
 import { BiGlobe } from "react-icons/bi";
 import { IoMdChatboxes } from "react-icons/io";
 import { TiTicket } from "react-icons/ti";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { logoutUser, selectUser } from "../store/UserSLice";
 
 export default function Header() {
-	const { state, dispatch } = useContext(DataContext);
-	const { auth, loading } = state;
+	// const { state, dispatch } = useContext(DataContext);
+	// const { auth, loading } = state;
+	const dispatch = useAppDispatch();
+	const auth = useAppSelector(selectUser);
 	const [search, setSearch] = useState("");
 
 	const mobileNav = useDisclosure();
 	const router = useRouter();
 	const toast = createStandaloneToast();
 
-	const handleSearch = (e) => {
+	//
+	const loading = false;
+
+	const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault();
 		router.push(`/search?c=${search}`);
-		dispatch({ type: "LOADING", payload: true });
+		// dispatch({ type: "LOADING", payload: true });
 		mobileNav.onClose();
 	};
 
 	const handleLogout = () => {
 		localStorage.removeItem("user");
-		dispatch({ type: "AUTH", payload: {} });
+		dispatch(logoutUser());
 		toast({
 			title: "Logged out successfully!",
 			description: "Successfully logged out.",
@@ -54,7 +61,7 @@ export default function Header() {
 			duration: 5000,
 			isClosable: true,
 		});
-		return router.reload("/");
+		return router.push("/");
 	};
 
 	return (
@@ -142,7 +149,7 @@ export default function Header() {
 								</HStack>
 							</Flex>
 							<HStack spacing="5" display={{ base: "none", md: "flex" }}>
-								{!auth ? (
+								{auth.name == "" ? (
 									<Button
 										variant="solid"
 										fontSize="medium"

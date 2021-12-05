@@ -1,6 +1,15 @@
+import { ReducerAction, ReducerWithoutAction } from "react";
 import { ACTIONS } from "./Actions";
 
-const reducers = (state, action) => {
+interface ReducerPayload<P> {
+	type: string;
+	payload: P;
+}
+
+const reducers = function <S>(
+	state: S,
+	action: { type: string; payload: any }
+) {
 	switch (action.type) {
 		case ACTIONS.AUTH:
 			return {

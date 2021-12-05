@@ -3,6 +3,14 @@ import Head from "next/head";
 import Image from "next/image";
 import ProfileCard from "../components/ProfileCard";
 
+const names = [
+	"Cornelius Tantius",
+	"Ricky",
+	"Brian Karnadi Japar",
+	"Jonathan Kristianto",
+	"Raymond Tiandinatan",
+];
+
 const About = () => (
 	<Box px={{ lg: 52, base: 4 }}>
 		<Head>
@@ -65,11 +73,11 @@ const About = () => (
 			alignItems="center"
 			flexWrap="wrap"
 		>
-			<ProfileCard name="Cornelius Tantius" />
-			<ProfileCard name="Ricky" />
-			<ProfileCard name="Brian Karnadi Japar" />
-			<ProfileCard name="Jonathan Kristianto" />
-			<ProfileCard name="Raymond Tiandinatan" />
+			{names.map((name: string, i: number) => (
+				<span key={i}>
+					<ProfileCard name={name} />
+				</span>
+			))}
 		</Box>
 		<Box>
 			<Heading

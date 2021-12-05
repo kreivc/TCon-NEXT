@@ -36,7 +36,9 @@ export default function Register() {
 	const [isLoading, setIsLoading] = useState(false);
 	const toast = createStandaloneToast();
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = async (
+		e: React.FormEvent<HTMLFormElement | HTMLDivElement>
+	) => {
 		e.preventDefault();
 		if (firstName === "") {
 			return toast({

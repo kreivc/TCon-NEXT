@@ -6,7 +6,19 @@ import Card from "../components/Card";
 import { useRouter } from "next/router";
 import { DataContext } from "../context/GlobalState";
 
-export default function Search({ data }) {
+export interface Consultant {
+	email: string;
+	name: string;
+	phone: string;
+	userId: string;
+}
+
+interface SearchProps {
+	data: {
+		consultants: Consultant[];
+	};
+}
+export default function Search({ data }: SearchProps) {
 	const router = useRouter();
 	const [noData, setNoData] = useState(false);
 	const { dispatch } = useContext(DataContext);
@@ -26,9 +38,9 @@ export default function Search({ data }) {
 				<Text fontWeight="bold" fontSize="xl" py="2" color="gray.700">
 					Search result for: {router.query.c}
 				</Text>
-				<SimpleGrid columns={{ base: "1", md: "3" }} spacing={8}>
+				<SimpleGrid column={{ base: "1", md: "3" }} spacing={8}>
 					{data.consultants.map((c, i) => {
-						if (c.name.toLowerCase().includes(router.query.c)) {
+						if (c.name.toLowerCase().includes(router.query.c as string)) {
 							noData === false && setNoData(true);
 							return <Card key={c.userId} consultant={c} />;
 						} else {
