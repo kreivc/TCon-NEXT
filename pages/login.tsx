@@ -87,7 +87,7 @@ export default function Login() {
 				duration: 5000,
 				isClosable: true,
 			});
-			// router.push("/");
+			router.push("/");
 		}
 		setIsLoading(false);
 	};

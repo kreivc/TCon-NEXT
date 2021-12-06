@@ -19,7 +19,7 @@ import { FiChevronDown } from "react-icons/fi";
 
 interface MobileNavProps {
 	mobileNav: UseDisclosureReturn;
-	auth: any;
+	user: any;
 	handleLogout: () => void;
 	handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	setSearch: React.Dispatch<React.SetStateAction<string>>;
@@ -27,7 +27,7 @@ interface MobileNavProps {
 
 export default function MobileNav({
 	mobileNav,
-	auth,
+	user,
 	handleLogout,
 	handleSearch,
 	setSearch,
@@ -70,7 +70,7 @@ export default function MobileNav({
 					type="submit"
 				/>
 			</InputGroup>
-			{auth === undefined ? (
+			{Object.keys(user).length === 0 ? (
 				<Button
 					w="full"
 					variant="ghost"
@@ -93,7 +93,7 @@ export default function MobileNav({
 						_hover={{ bg: "#60cdfc" }}
 						w="full"
 					>
-						{auth.user.name}
+						{user.name.split(" ")[0]}
 					</MenuButton>
 					<MenuList>
 						<MenuItem

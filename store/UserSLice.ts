@@ -12,14 +12,8 @@ export interface User {
 	userId: string;
 }
 
-const initialState: User = {
-	email: "",
-	isConsultant: 0,
-	message: "",
-	name: "",
-	phone: "",
-	status: false,
-	userId: "",
+const initialState = {
+	data: {} as User,
 };
 
 export interface LoginProps {
@@ -51,26 +45,17 @@ export const logout = createAsyncThunk("user/logout", () => {
 export const userSlice = createSlice({
 	name: "user",
 	initialState,
-	reducers: {
-		loggedUser: (state, action: PayloadAction<User>) => {
-			state = action.payload;
-		},
-		logoutUser: (state) => {
-			state = initialState;
-		},
-	},
+	reducers: {},
 	extraReducers: (builder) => {
 		builder.addCase(fetchByCreds.fulfilled, (state, action) => {
-			state = action.payload;
+			state.data = action.payload;
 		});
-		builder.addCase(logout.fulfilled, (state, action) => {
-			state = action.payload;
+		builder.addCase(logout.fulfilled, (state) => {
+			state.data = initialState.data;
 		});
 	},
 });
 
-export const { loggedUser, logoutUser } = userSlice.actions;
-
-export const selectUser = (state: RootState) => state.user;
+export const selectUser = (state: RootState) => state.user.data;
 
 export default userSlice.reducer;
