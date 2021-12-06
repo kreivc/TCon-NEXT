@@ -6,26 +6,38 @@ export interface UserState {
 }
 
 export const loadState = () => {
-	// console.log("load");
+	console.log("load");
 	try {
 		const serializedState = localStorage.getItem("user");
 		if (!serializedState) return undefined;
 		return JSON.parse(serializedState);
 	} catch (e) {
-		return undefined;
+		return {
+			user: {
+				email: "",
+				isConsultant: 0,
+				message: "",
+				name: "",
+				phone: "",
+				status: false,
+				userId: "",
+			},
+		};
 	}
 };
 
 export const store = configureStore({
 	reducer: { user },
-	preloadedState: loadState(),
+	// preloadedState: loadState(),
 });
 
 // store.subscribe(() => {
+// 	console.log("getState", store.getState());
 // 	saveState(store.getState());
 // });
 
 export const saveState = (state: UserState) => {
+	console.log("save");
 	try {
 		const serializedState = JSON.stringify(state);
 		localStorage.setItem("user", serializedState);

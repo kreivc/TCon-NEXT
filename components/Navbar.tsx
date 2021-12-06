@@ -27,7 +27,7 @@ import { BiGlobe } from "react-icons/bi";
 import { IoMdChatboxes } from "react-icons/io";
 import { TiTicket } from "react-icons/ti";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { logoutUser, selectUser } from "../store/UserSLice";
+import { logout, logoutUser, selectUser } from "../store/UserSLice";
 import { loadState } from "../store";
 
 export default function Header() {
@@ -51,8 +51,7 @@ export default function Header() {
 	};
 
 	const handleLogout = () => {
-		localStorage.removeItem("user");
-		dispatch(logoutUser());
+		dispatch(logout());
 		toast({
 			title: "Logged out successfully!",
 			description: "Successfully logged out.",

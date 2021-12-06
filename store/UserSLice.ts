@@ -1,5 +1,6 @@
 import { RootState } from "./index";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import axios, { AxiosResponse } from "axios";
 
 export interface User {
 	email: string;
@@ -21,6 +22,32 @@ const initialState: User = {
 	userId: "",
 };
 
+export interface LoginProps {
+	email: string;
+	password: string;
+}
+
+export const fetchByCreds = createAsyncThunk(
+	"user/fetchByCreds",
+	async (creds: LoginProps) => {
+		const res = await axios.post("https://tcon-api.herokuapp.com/auth/login", {
+			...creds,
+		});
+		try {
+			const serializedState = JSON.stringify({ user: res.data });
+			localStorage.setItem("user", serializedState);
+		} catch {
+			console.log("error");
+		}
+		return res.data;
+	}
+);
+
+export const logout = createAsyncThunk("user/logout", () => {
+	localStorage.removeItem("user");
+	return initialState;
+});
+
 export const userSlice = createSlice({
 	name: "user",
 	initialState,
@@ -31,6 +58,14 @@ export const userSlice = createSlice({
 		logoutUser: (state) => {
 			state = initialState;
 		},
+	},
+	extraReducers: (builder) => {
+		builder.addCase(fetchByCreds.fulfilled, (state, action) => {
+			state = action.payload;
+		});
+		builder.addCase(logout.fulfilled, (state, action) => {
+			state = action.payload;
+		});
 	},
 });
 
