@@ -97,7 +97,12 @@ export default function Header() {
 							<Button w="full" variant="ghost" leftIcon={<IoMdChatboxes />}>
 								Ticket
 							</Button>
-							<Button w="full" variant="ghost" leftIcon={<TiTicket />}>
+							<Button
+								w="full"
+								variant="ghost"
+								leftIcon={<TiTicket />}
+								onClick={() => router.push("/chat")}
+							>
 								Chat
 							</Button>
 						</Flex>

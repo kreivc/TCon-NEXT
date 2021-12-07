@@ -22,7 +22,7 @@ import Logo from "../assets/logoTCon.png";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useAppDispatch } from "../store/hooks";
-import { fetchByCreds } from "../store/UserSLice";
+import { login } from "../store/UserSLice";
 
 export default function Login() {
 	const [email, setEmail] = useState("");
@@ -68,7 +68,7 @@ export default function Login() {
 			});
 		}
 		setIsLoading(true);
-		const { payload } = await dispatch(fetchByCreds({ email, password }));
+		const { payload } = await dispatch(login({ email, password }));
 		if (payload.message == "Failed to Fetch JSON Payload") {
 			localStorage.removeItem("user");
 			toast({
@@ -79,7 +79,6 @@ export default function Login() {
 				isClosable: true,
 			});
 		} else {
-			dispatch(fetchByCreds({ email, password }));
 			toast({
 				title: "Login Success!",
 				description: "Successfully logged.",

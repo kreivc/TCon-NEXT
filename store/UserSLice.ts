@@ -21,17 +21,23 @@ export interface LoginProps {
 	password: string;
 }
 
-export const fetchByCreds = createAsyncThunk(
-	"user/fetchByCreds",
+export const login = createAsyncThunk(
+	"user/login",
 	async (creds: LoginProps) => {
 		const res = await axios.post("https://tcon-api.herokuapp.com/auth/login", {
 			...creds,
 		});
-		try {
+		if (res.data.userId !== "") {
 			const serializedState = JSON.stringify({ user: res.data });
 			localStorage.setItem("user", serializedState);
-		} catch {
-			console.log("error");
+			axios.put(
+				"https://api.chatengine.io/users/",
+				{
+					username: res.data.email,
+					secret: res.data.userId,
+				},
+				{ headers: { "Private-key": "149fa814-bb6f-4f6c-9760-5af0d867a318" } }
+			);
 		}
 		return res.data;
 	}
@@ -47,7 +53,7 @@ export const userSlice = createSlice({
 	initialState,
 	reducers: {},
 	extraReducers: (builder) => {
-		builder.addCase(fetchByCreds.fulfilled, (state, action) => {
+		builder.addCase(login.fulfilled, (state, action) => {
 			state.data = action.payload;
 		});
 		builder.addCase(logout.fulfilled, (state) => {
