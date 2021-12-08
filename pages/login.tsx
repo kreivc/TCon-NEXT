@@ -58,10 +58,10 @@ export default function Login() {
 				isClosable: true,
 			});
 		}
-		if (password.length < 6) {
+		if (password.length < 5) {
 			return toast({
 				title: "Password too weak",
-				description: "Password must be 6 character minimal.",
+				description: "Password must be 5 character minimal.",
 				status: "error",
 				duration: 5000,
 				isClosable: true,

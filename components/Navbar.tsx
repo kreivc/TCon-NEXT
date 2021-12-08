@@ -43,6 +43,7 @@ export default function Header() {
 	const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault();
 		router.push(`/search?c=${search}`);
+		setSearch("");
 		mobileNav.onClose();
 	};
 

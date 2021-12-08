@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Box, SimpleGrid, Text } from "@chakra-ui/react";
+import { Box, SimpleGrid, Text, useBreakpointValue } from "@chakra-ui/react";
 import React, { useState } from "react";
 import axios from "axios";
 import Card from "../components/Card";
@@ -19,7 +19,7 @@ interface SearchProps {
 }
 export default function Search({ data }: SearchProps) {
 	const router = useRouter();
-	const [noData, setNoData] = useState(false);
+	const responsive = useBreakpointValue({ base: 1, md: 3 });
 
 	return (
 		<>
@@ -32,30 +32,14 @@ export default function Search({ data }: SearchProps) {
 				<Text fontWeight="bold" fontSize="xl" py="2" color="gray.700">
 					Search result for: {router.query.c}
 				</Text>
-				<SimpleGrid column={{ base: "1", md: "3" }} spacing={8}>
-					{data.consultants.map((c, i) => {
-						if (c.name.toLowerCase().includes(router.query.c as string)) {
-							noData === false && setNoData(true);
-							return <Card key={c.userId} consultant={c} />;
-						} else {
-							if (!noData && i === data.consultants.length - 1) {
-								return (
-									<Box
-										p="2"
-										fontWeight="semibold"
-										bg="gray.100"
-										color="#52C8FA"
-										rounded="md"
-										textAlign="center"
-										w={{ base: "full", md: "85px" }}
-										key={c.userId}
-									>
-										No Data
-									</Box>
-								);
-							}
-						}
-					})}
+				<SimpleGrid columns={responsive} spacing={8}>
+					{data.consultants
+						.filter((data) =>
+							data.name.toLowerCase().includes(router.query.c as string)
+						)
+						.map((c) => (
+							<Card key={c.userId} consultant={c} />
+						))}
 				</SimpleGrid>
 			</Box>
 		</>

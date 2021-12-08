@@ -85,9 +85,9 @@ export default function Register() {
 				isClosable: true,
 			});
 		}
-		if (password.length < 6) {
+		if (password.length < 5) {
 			return toast({
-				title: "Password must be 6 character minimal.",
+				title: "Password must be 5 character minimal.",
 				description: "Unable to register.",
 				status: "error",
 				duration: 5000,
