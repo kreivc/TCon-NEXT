@@ -36,14 +36,14 @@ const Consultant = () => {
 		const fetch = async () => {
 			const res = await axios.post(
 				"https://tcon-api.herokuapp.com/consultant/details",
-				{ userId: router.query.id[0] }
+				{ userId: router.query.param[0] }
 			);
 			setConsultant(res.data);
 		};
 		fetch();
 	}, [router]);
 
-	const image: Array<string> = router.query.id[1].split("%20");
+	const image: Array<string> = router.query.param[1].split("%20");
 	let alias: string =
 		image.length > 1
 			? image[0].charAt(0) + image[1].charAt(0)
@@ -72,7 +72,7 @@ const Consultant = () => {
 			.post(
 				`https://api.chatengine.io/chats/Consultation_${date}/people/`,
 				{
-					username: router.query.id[2],
+					username: router.query.param[2],
 				},
 				{
 					headers: {
@@ -107,7 +107,7 @@ const Consultant = () => {
 						mx={10}
 					>
 						<Heading textAlign="center" color="gray.900">
-							{router.query.id[1]}
+							{router.query.param[1]}
 						</Heading>
 						<Image
 							src={`https://avatars.dicebear.com/api/initials/:${alias}.svg`}
