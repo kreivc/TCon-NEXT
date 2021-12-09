@@ -8,6 +8,7 @@ import {
 	VStack,
 } from "@chakra-ui/react";
 import axios from "axios";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -26,35 +27,46 @@ type ConsultantProps = {
 	};
 };
 
-const Consultant = () => {
-	const [consultant, setConsultant] = useState<ConsultantProps | null>();
-	const user = useAppSelector(selectUser);
+type InitialProps = {
+	data: {
+		params: string[];
+	};
+};
 
+const Consultant = ({ data }: InitialProps) => {
+	const [consultant, setConsultant] = useState<ConsultantProps | null>();
+	const [alias, setAlias] = useState<string>("");
+	const user = useAppSelector(selectUser);
 	const router = useRouter();
+	const { params } = data;
 
 	useEffect(() => {
 		const fetch = async () => {
 			const res = await axios.post(
 				"https://tcon-api.herokuapp.com/consultant/details",
-				{ userId: router.query.param[0] }
+				{ userId: params[0] }
 			);
 			setConsultant(res.data);
 		};
 		fetch();
-	}, [router]);
+	}, [params]);
 
-	const image: Array<string> = router.query.param[1].split("%20");
-	let alias: string =
-		image.length > 1
-			? image[0].charAt(0) + image[1].charAt(0)
-			: image[0].charAt(0);
+	useEffect(() => {
+		const image = params[1].split(" ");
+		setAlias(
+			image.length > 1
+				? image[0].charAt(0) + image[1].charAt(0)
+				: image[0].charAt(0)
+		);
+	}, [params]);
 
 	const handleConsult = async () => {
 		const date = Date.now();
 		await axios
-			.post(
+			.put(
 				"https://api.chatengine.io/chats/",
 				{
+					usernames: [user.email, params[2]],
 					title: `Consultation_${date}`,
 					is_direct_chat: true,
 				},
@@ -68,21 +80,6 @@ const Consultant = () => {
 			)
 			.catch((err) => console.log(err));
 
-		await axios
-			.post(
-				`https://api.chatengine.io/chats/Consultation_${date}/people/`,
-				{
-					username: router.query.param[2],
-				},
-				{
-					headers: {
-						"Project-ID": "48c2e8af-b857-4a4b-a2b0-3b9ac844e0fe",
-						"User-Name": user.email,
-						"User-Secret": user.userId,
-					},
-				}
-			)
-			.catch((err) => console.log(err));
 		router.push("/chat");
 	};
 
@@ -107,7 +104,7 @@ const Consultant = () => {
 						mx={10}
 					>
 						<Heading textAlign="center" color="gray.900">
-							{router.query.param[1]}
+							{params[1]}
 						</Heading>
 						<Image
 							src={`https://avatars.dicebear.com/api/initials/:${alias}.svg`}
@@ -176,3 +173,12 @@ const Consultant = () => {
 };
 
 export default Consultant;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	try {
+		const data = context.params;
+		return { props: { data } };
+	} catch (err) {
+		return { props: { errors: err.message } };
+	}
+};
